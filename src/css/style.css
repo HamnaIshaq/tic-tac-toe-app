@@ -1,0 +1,47 @@
+:root {
+  --white: #FFFFFF;
+  --lightYellow: #FEF5AC;
+  --saturatedBlue: #25316D;
+  --dullLightBlue: #5A7A98;
+}
+
+body {
+  background-color: var(--lightYellow);
+}
+
+.btn-rules {
+  text-transform: uppercase;
+  background-color: var(--white);
+  border: 3px solid var(--saturatedBlue);
+  color: var(--saturatedBlue);
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 13px;
+  font-size: 1.25rem;
+  width: 300px;
+  padding: 1em 0;
+  cursor: pointer;
+  transition: all .5s ease-out;
+}
+
+.btn-rules:focus,
+.btn-rules:hover {
+  background-color: var(--saturatedBlue);
+  color: var(--white);
+}
+
+.rules-container {
+  position: relative;
+}
+
+.rules-section {
+  position: absolute;
+  opacity: 0;
+  height: 0;
+  overflow: hidden;
+  transition: all .5s ease-out;
+}
+
+.rules-section.show {
+  height: auto;
+  opacity: 1;
+}
