@@ -9,7 +9,6 @@ const GameBoard = (function() {
   ];
   // functions needed
   // update gameboard 
-  
 })();
 
 // player - factory function
@@ -21,3 +20,10 @@ const player1 = playerFactory('Bob', 'X');
 console.log(player1)
 const player2 = playerFactory('John', 'O');
 console.log(player2)
+
+
+document.querySelector('.btn-rules').addEventListener('click', showRules, false);
+
+function showRules() {
+  document.querySelector('.rules-section').classList.add('show');
+}
