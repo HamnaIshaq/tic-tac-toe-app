@@ -11,6 +11,16 @@ body {
   font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+h1 {
+  font-size: 2rem;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+h2 {
+  font-size: 1.35rem;
+}
+
 .btn-rules {
   text-transform: uppercase;
   background-color: var(--white);
@@ -87,6 +97,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 }
 
 .remove-border-top {
