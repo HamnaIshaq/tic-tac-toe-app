@@ -20,18 +20,18 @@
 
       <h1>tic tac toe</h1>
 
-      <h2>Current Player: <span class="current-player-name">Player 1</span></h2>
+      <h2>Current Player: <span class="current-player-name" data-player="1">Player 1</span></h2>
 
       <div class="tic-tac-toe-game-board game-board">
-        <div class="game-cell remove-border-top remove-border-left"></div>
-        <div class="game-cell remove-border-top"></div>
-        <div class="game-cell remove-border-top remove-border-right"></div>
-        <div class="game-cell remove-border-left"></div>
-        <div class="game-cell"></div>
-        <div class="game-cell remove-border-right"></div>
-        <div class="game-cell remove-border-bottom remove-border-left"></div>
-        <div class="game-cell remove-border-bottom"></div>
-        <div class="game-cell remove-border-bottom remove-border-right"></div>
+        <div class="game-cell remove-border-top remove-border-left" data-row="0" data-col="0"></div>
+        <div class="game-cell remove-border-top" data-row="0" data-col="1"></div>
+        <div class="game-cell remove-border-top remove-border-right" data-row="0" data-col="2"></div>
+        <div class="game-cell remove-border-left" data-row="1" data-col="0"></div>
+        <div class="game-cell" data-row="1" data-col="1"></div>
+        <div class="game-cell remove-border-right" data-row="1" data-col="2"></div>
+        <div class="game-cell remove-border-bottom remove-border-left" data-row="2" data-col="0"></div>
+        <div class="game-cell remove-border-bottom" data-row="2" data-col="1"></div>
+        <div class="game-cell remove-border-bottom remove-border-right" data-row="2" data-col="2"></div>
       </div>
 
       <div class="score-container">
