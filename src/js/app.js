@@ -49,7 +49,7 @@ const GameBoard = (function() {
 
   render();
 
-  // render player move on board
+  // render player move on board - updates DOM
   function render() {
     let boardCell = 0;
     for(let row = 0; row < _gameBoard.length; row++) {
@@ -63,6 +63,13 @@ const GameBoard = (function() {
         boardCell++
       } 
     }
+
+    _currentPlayer = getCurrentPlayer();
+    currentPlayerName.innerHTML = `
+      ${_currentPlayer.moveOnBoard().marker === 'x' ? '<img style="width: 18px;" src="./assets/marker-x.png" alt="cross">' : '<img style="width: 18px;" src="./assets/marker-o.png" alt="circle">'}
+      ${_currentPlayer.name}
+    `;
+
   }
 
   // determine current player
@@ -85,9 +92,10 @@ const GameBoard = (function() {
     _gameBoard[row][col] = _currentPlayer.moveOnBoard();
     console.log(_currentPlayer.moveOnBoard())
     unbindClickFromFilledCell(e.target);
-    render();
+    
     gameOver();
     changePlayer();
+    render();
   }
 
   // unbind click from already filled cell
