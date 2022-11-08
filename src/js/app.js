@@ -35,12 +35,18 @@ const GameBoard = (function() {
     ['', '', '']
   ];
   let _currentPlayer;
+  let _score;
 
   // cache DOM
   const game = document.querySelector('#game-id');
   const ticTacToeBoard = game.querySelector('.tic-tac-toe-game-board');
   const currentPlayerName = game.querySelector('.current-player-name');
   const gameCell = ticTacToeBoard.querySelectorAll('.game-cell');
+  const player1Score = game.querySelector('.player-1-score');
+  const tieScore = game.querySelector('.tie-score');
+  const player2Score = game.querySelector('.player-2-score');
+  const player1Name = game.querySelector('.player-1-name');
+  const player2Name = game.querySelector('.player-2-name');
 
   // bind events
   gameCell.forEach(cell => {
@@ -69,6 +75,10 @@ const GameBoard = (function() {
       ${_currentPlayer.moveOnBoard().marker === 'x' ? '<img style="width: 18px;" src="./assets/marker-x.png" alt="cross">' : '<img style="width: 18px;" src="./assets/marker-o.png" alt="circle">'}
       ${_currentPlayer.name}
     `;
+
+    // show players name
+    player1Name.textContent = player1.name;
+    player2Name.textContent = player2.name;
 
   }
 
@@ -103,6 +113,13 @@ const GameBoard = (function() {
     cell.removeEventListener('click', addMoveToGameBoard);
   }
 
+  // bind function on game cell
+  function bindClickFromFilledCell() {
+    gameCell.forEach(cell => {
+      cell.addEventListener('click', addMoveToGameBoard);
+    });
+  }
+
   function gameOver() {
     
     // game win by one player - 3 in a row, 3 in a column
@@ -114,6 +131,7 @@ const GameBoard = (function() {
         console.log('game won by ', _currentPlayer.moveOnBoard().marker, _currentPlayer.moveOnBoard().name);
         //resetGameBoard();
         //render();
+        //bindClickFromFilledCell();
       }
       // 3 in a column
       else if(_gameBoard[0][col].marker === _currentPlayer.moveOnBoard().marker 
