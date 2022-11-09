@@ -15,18 +15,9 @@ const playerFactory = function(name, marker, turn) {
 }
 
 const player1 = playerFactory('Bob', 'X', true);
-console.log(player1)
 const player2 = playerFactory('John', 'O', false);
-console.log(player2)
 
 // tic tac toe gameboard - revealing modular pattern
-/*
-let _gameBoard = [
-    [{marker:'x',move:'<img src="./assets/marker-x.png" alt="cross">'}, {marker:'x',move:'<img src="./assets/marker-x.png" alt="cross">'}, {marker:'x',move:'<img src="./assets/marker-x.png" alt="cross">'}],
-    [{marker:'x',move:'<img src="./assets/marker-x.png" alt="cross">'}, {marker:'x',move:'<img src="./assets/marker-x.png" alt="cross">'}, {marker:'x',move:'<img src="./assets/marker-x.png" alt="cross">'}],
-    [{marker:'x',move:'<img src="./assets/marker-x.png" alt="cross">'}, {marker:'x',move:'<img src="./assets/marker-x.png" alt="cross">'}, {marker:'x',move:'<img src="./assets/marker-x.png" alt="cross">'}]
-  ];
-*/
 const GameBoard = (function() {
   // init 
   let _gameBoard = [
@@ -35,7 +26,8 @@ const GameBoard = (function() {
     ['', '', '']
   ];
   let _currentPlayer;
-  let _score;
+  let _filledBoard = -1;
+  let _winner;
 
   // cache DOM
   const game = document.querySelector('#game-id');
@@ -57,6 +49,7 @@ const GameBoard = (function() {
 
   // render player move on board - updates DOM
   function render() {
+    _filledBoard++;
     let boardCell = 0;
     for(let row = 0; row < _gameBoard.length; row++) {
       for(let col = 0; col < _gameBoard.length; col++) {
@@ -71,6 +64,7 @@ const GameBoard = (function() {
     }
 
     _currentPlayer = getCurrentPlayer();
+
     currentPlayerName.innerHTML = `
       ${_currentPlayer.moveOnBoard().marker === 'x' ? '<img style="width: 18px;" src="./assets/marker-x.png" alt="cross">' : '<img style="width: 18px;" src="./assets/marker-o.png" alt="circle">'}
       ${_currentPlayer.name}
@@ -79,6 +73,18 @@ const GameBoard = (function() {
     // show players name
     player1Name.textContent = player1.name;
     player2Name.textContent = player2.name;
+
+    // highlight winning row/column
+    if(_winner === _currentPlayer.moveOnBoard().marker && _winner === 'x') {
+      player1Score.textContent = parseInt(player1Score.textContent)+1;
+    }
+    else if(_winner === _currentPlayer.moveOnBoard().marker && _winner === 'o') {
+      player2Score.textContent = parseInt(player2Score.textContent)+1;
+    }
+    
+    if( _filledBoard === 9) {
+      tieScore.textContent = parseInt(tieScore.textContent)+1;
+    }
 
   }
 
@@ -100,12 +106,9 @@ const GameBoard = (function() {
 
     _currentPlayer = getCurrentPlayer();
     _gameBoard[row][col] = _currentPlayer.moveOnBoard();
-    console.log(_currentPlayer.moveOnBoard())
     unbindClickFromFilledCell(e.target);
     
     gameOver();
-    changePlayer();
-    render();
   }
 
   // unbind click from already filled cell
@@ -122,30 +125,68 @@ const GameBoard = (function() {
 
   function gameOver() {
     
-    // game win by one player - 3 in a row, 3 in a column
+    gameWin();
+    gameTie();
+    
+  }
+
+  function gameWin() {
+    let winner = rowWinCondition() || columnWinCondition();
+
+    if(winner === true) {
+      _winner = _currentPlayer.moveOnBoard().marker;
+      resetGameBoard();
+      render();
+      bindClickFromFilledCell();
+      _winner = '';
+    }
+    else {
+      changePlayer();
+      render();
+    }
+  }
+
+  // 3 in a row
+  function rowWinCondition() {
+    // game win by one player - 3 in a row
     for(let col = 0; col < _gameBoard.length; col++) {
       // 3 in a row
       if(_gameBoard[col][0].marker === _currentPlayer.moveOnBoard().marker 
       && _gameBoard[col][1].marker === _currentPlayer.moveOnBoard().marker 
       && _gameBoard[col][2].marker === _currentPlayer.moveOnBoard().marker) {
-        console.log('game won by ', _currentPlayer.moveOnBoard().marker, _currentPlayer.moveOnBoard().name);
-        //resetGameBoard();
-        //render();
-        //bindClickFromFilledCell();
-      }
-      // 3 in a column
-      else if(_gameBoard[0][col].marker === _currentPlayer.moveOnBoard().marker 
-      && _gameBoard[1][col].marker === _currentPlayer.moveOnBoard().marker 
-      && _gameBoard[2][col].marker === _currentPlayer.moveOnBoard().marker) {
-        console.log('game won by ', _currentPlayer.moveOnBoard().marker, _currentPlayer.moveOnBoard().name);
-        //resetGameBoard();
-        //render();
-      }
-      else {
-
+        return true;
       }
     }
-    
+  }
+  // 3 in a column
+  function columnWinCondition() {
+    // game win by one player - 3 in a column
+    for(let col = 0; col < _gameBoard.length; col++) {
+      // 3 in a column
+      if(_gameBoard[0][col].marker === _currentPlayer.moveOnBoard().marker 
+      && _gameBoard[1][col].marker === _currentPlayer.moveOnBoard().marker 
+      && _gameBoard[2][col].marker === _currentPlayer.moveOnBoard().marker) {
+        //resetGameBoard();
+        //render();
+        return true;
+      }
+    }
+  }
+
+  function gameTie() {
+    let tie = tieCondition();
+
+    if(tie === true) {
+      resetGameBoard();
+      render();
+      bindClickFromFilledCell();
+    }
+  }
+
+  function tieCondition() {
+    if(_filledBoard === 9) {
+      return true;
+    }
   }
 
   function resetGameBoard() {
